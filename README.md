@@ -208,23 +208,74 @@ Son adımda, az önce hesapladığımız 3x2 boyutlu W matrisini y = W' × x den
 
 Son olarak, iki ana bileşenimizi hesapladık ve veri noktalarını yeni alt uzaya yansıttık.
 
-### 2.4 PCA'nın Kullanım Alanları
+### 2.4 PCA Nasıl Çalışır?
+Geometrik bir yaklaşım kullanarak PCA'nın nasıl çalıştığına bir göz atalım.
+
+N satırlı ("gözlemler" olarak da bilinir) ve K sütunlu ("değişkenler" olarak da bilinir) bir X matrisi düşünün. Bu matris için, değişken sayısı kadar boyuta sahip bir değişken uzayı oluşturuyoruz (aşağıdaki şekle bakın). Her değişken bir koordinat eksenini temsil eder. Her değişken için uzunluk, normalde birim varyansa göre ölçeklendirme yoluyla bir ölçeklendirme kriterine göre standardize edilmiştir.  
+
+![blog-photo-b24-3-unit-variance-en-b-00367-sartorius](https://user-images.githubusercontent.com/58481075/211150789-f4f69077-0d97-4316-9889-004655cd3d86.jpg)  
+
+Bir K-boyutlu değişken uzay. Basitlik için, yalnızca üç değişken ekseni görüntülenir. Her koordinat ekseninin "uzunluğu", genellikle birim varyans ölçeklendirmesi olmak üzere belirli bir kritere göre standardize edilmiştir.  
+
+Bir sonraki adımda, X matrisinin her gözlemi (sırası) K boyutlu değişken uzayına yerleştirilir. Sonuç olarak, veri tablosundaki satırlar bu boşlukta bir nokta sürüsü oluşturur.
+
+![blog-photo-b24-4-figure-3-en-b-00368-sartorius](https://user-images.githubusercontent.com/58481075/211150811-14e67216-c3df-4769-8456-214882b88b60.jpg)
+
+X veri matrisindeki gözlemler (satırlar), değişken uzayda (K-uzayı) bir nokta sürüsü olarak anlaşılabilir.  
+
+Ortalama Merkezleme:  
+Daha sonra, ortalama merkezleme, değişken ortalamaların verilerden çıkarılmasını içerir. Ortalamaların vektörü, K-uzayındaki bir noktaya karşılık gelir.
+
+![blog-photo-b24-5-figure-5-en-b-00369-sartorius](https://user-images.githubusercontent.com/58481075/211150847-80f8361f-03f5-4203-b959-b62560e1608d.jpg)  
+
+Ortalama merkezleme prosedüründe, önce değişken ortalamaları hesaplarsınız. Bu ortalama vektörü, uzayda bir nokta (burada kırmızıyla) olarak yorumlanabilir. Nokta, nokta sürüsünün ortasında yer alır (ağırlık merkezinde).  
+
+Verilerden ortalamaların çıkarılması, koordinat sisteminin yeniden konumlandırılmasına karşılık gelir, öyle ki artık ortalama nokta başlangıç ​​noktasıdır.  
+
+![blog-photo-b24-6-fiture-5-en-b-00370-sartorius](https://user-images.githubusercontent.com/58481075/211150874-f2354f7a-01a0-4eb1-9797-4e5f54eb0923.jpg)  
+
+Ortalama merkezleme prosedürü, koordinat sisteminin orijinini ortalama noktayla (burada kırmızıyla) çakışacak şekilde hareket ettirmeye karşılık gelir.
+
+İlk Ana Bileşen:  
+Ortalama merkezleme ve birim varyansa göre ölçeklendirmeden sonra, veri seti birinci özet indeksin, birinci temel bileşenin (PC1) hesaplanması için hazırdır. Bu bileşen, K-boyutlu değişken uzayındaki verilere en küçük kareler anlamında en iyi yaklaşan çizgidir. Bu çizgi ortalama noktadan geçer. PC hattı boyunca bir koordinat değeri elde etmek için artık her gözlem (sarı nokta) bu hatta yansıtılabilir. Bu yeni koordinat değeri skor olarak da bilinir .
+
+![blog-photo-b24-7-fiture-6-en-b-00371-sartorius](https://user-images.githubusercontent.com/58481075/211150917-ce2e790b-a848-43b5-8726-f1bd14083d2e.jpg)  
+
+İlk ana bileşen (PC1), nokta sürüsünün şeklini en iyi açıklayan çizgidir. Verideki maksimum varyans yönünü temsil eder. PC hattı boyunca bir koordinat değeri elde etmek için her gözlem (sarı nokta) bu hatta yansıtılabilir. Bu değer puan olarak bilinir.  
+
+İkinci Temel Bileşen:  
+Genellikle, bir veri setinin sistematik varyasyonunu modellemek için bir özet dizin veya ana bileşen yetersizdir. Böylece, ikinci bir özet indeks – ikinci bir ana bileşen (PC2) – hesaplanır. İkinci PC de birinci PC'ye ortogonal olan K-boyutlu değişken uzayında bir çizgi ile temsil edilir. Bu çizgi aynı zamanda ortalama noktadan da geçer ve X-verilerinin yaklaşımını mümkün olduğu kadar geliştirir.
+
+![blog-photo-b24-8-figure-7-en-b-00372-sartorius](https://user-images.githubusercontent.com/58481075/211150946-b3ddbaed-627e-4b2a-9faa-4c3860a3fb4f.jpg)  
+
+İkinci ana bileşen (PC2), birinci PC'ye ortogonal olurken, verilerdeki en büyük ikinci varyasyon kaynağını yansıtacak şekilde yönlendirilmiştir. PC2 ortalama noktasından da geçer.  
+
+İki Ana Bileşen Bir Model Düzlemi Tanımlar:    
+İki ana bileşen türetildiğinde, birlikte bir yer, K-boyutlu değişken uzayına açılan bir pencere tanımlarlar. Tüm gözlemleri düşük boyutlu alt uzaya yansıtarak ve sonuçları çizerek, incelenen veri setinin yapısını görselleştirmek mümkündür. Bu düzlemdeki gözlemlerin koordinat değerlerine puanlar denir ve bu nedenle böyle bir öngörülen konfigürasyonun çizimi puan grafiği olarak bilinir.
+
+![blog-photo-b24-9-figure-8-en-b-00373-sartorius](https://user-images.githubusercontent.com/58481075/211151016-9a02968f-5a10-41d6-928a-2fe7ebb03d31.jpg)  
+
+İki bilgisayar bir düzlem oluşturur. Bu düzlem, grafik olarak görselleştirilebilen çok boyutlu uzaya açılan bir penceredir. Her gözlem, her biri için bir puan vererek bu düzleme yansıtılabilir.  
 
 
-#### 2.4.1 Genetik
+
+### 2.5 PCA'nın Kullanım Alanları
+
+
+#### 2.5.1 Genetik
 
 Genetik çeşitliliğin coğrafi konum ve etnik kökene göre dağılımı,bir ırkın yaşadığı tarihsel demografik olaylar ve süreçler hakkında geniş bir bilgi kaynağı sağlar.Bununla birlikte kolonizasyon, izolasyon, göç ve karışım gibi süreçlerin doğası ve zamanlaması hakkında çıkarımlar yapmak çok zorlaşabilir. Temel Bileşen Analizi de genetik varyasyonun coğrafi konum ve etnik kökene dağılımındaki yapıyı belirlemek için yaygın olarak kullanılır. 
           
-#### 2.4.2 Sağlık
+#### 2.5.2 Sağlık
 
 Elektronik Sağlık Hizmeti kayıtları kullanan klinik araştırmalar genellikle çok sayıda değişken sunar. Bu değişkenler sıklıkla birbirleriyle ilişkilidir ve bu da  regresyon modellerinde çoklu bağlantıya neden olur. Çoklu bağlantıdan etkilenen  tahminlerin büyük standart hataları olabilir ve bu tür tahminler üzerindeki çıkarımı daha az kesin hale getirir.
 Bu tip bir sorun klinik çalışmalarda mevcuttur ve bu sorunla başa çıkmak için kullanılan yöntemlerden bir tanesi de Temel Bileşen Analizidir.   
 
-#### 2.4.3 Enerji
+#### 2.5.3 Enerji
 
 Günümüzde fosil yakıtlar nedeniyle   artan küresel ısınma sorununa karşılık güneş enerjisi benzeri yenilenebilir enerjilere  yönelim artmaktadır. Ancak güneş enerjisi sistemlerinin sorunsuz  ve de sürekli çalışabilmesi için güneş ışınımının yoğunluğu ile ilgili birkaç dakika önceden bilgi alınmalıdır. Bunun için çeşitli modeller olsa da bu modeller çoğunlukla yüksek hesaplama süresi gerektirir. Hesaplama sürelerini azaltmak amacıyla veri boyutunu küçültülür ve bunun için temel bileşen analizi kullanılır.
 
-#### 2.4.4 Makine Öğrenmesinde Kullanımı
+#### 2.5.4 Makine Öğrenmesinde Kullanımı
 
 Veri Bilimi çalışmalarında çok sayıda değişken ile çalışılması gerekebilir.Bu durum eğitim(training) süresinin fazla olması, aşırı öğrenme(overlifting) ve çoklu doğrusal bağlantı(multicollinearity) gibi sorunları beraberinde getirir.Hazırlanan modellerin optimum sürede ve performansla çalışması gerekecektir.
 
@@ -235,7 +286,7 @@ Ayrıca Temel Bileşenler Analizi, yüz tanıma, resim sıkıştırma ve örünt
 
    ![image](https://user-images.githubusercontent.com/75726215/208492447-391ec063-983f-46c4-9de4-105d442f0d89.png)
    
-#### 2.4.5 Görüntüler için PCA 
+#### 2.5.5 Görüntüler için PCA 
 
 Bir makinenin görüntüleri okuyabildiğini veya sayı kullanmadan sadece görüntüleri kullanarak bazı hesaplamalar yapabileceğini birçok kez merak ediyor olmalısınız. Şimdi bunun bir kısmını cevaplamaya çalışacağız. Basit olması için, tartışmamızı yalnızca kare resimlerle sınırlayacağız. NxN piksel boyutunda herhangi bir kare görüntü, her öğenin görüntünün yoğunluk değeri olduğu bir NxN matrisi olarak temsil edilebilir. (Görüntü, tek bir görüntü oluşturacak şekilde piksel sıralarının birbiri ardına yerleştirilmesiyle oluşturulmuştur.) Yani bir dizi görüntünüz varsa, bu matrislerden bir matris oluşturabiliriz, bir dizi pikseli bir vektör olarak kabul ederek, biz üzerinde temel bileşen analizine başlamaya hazırdır. Nasıl faydalıdır?
 
@@ -243,7 +294,7 @@ Bir önceki kümenin parçası olmayan, tanımanız için size bir görüntü ve
 
 Görüntü sıkıştırma için, daha az anlamlı özvektörleri çıkararak, aslında depolama için görüntünün boyutunu azaltabiliriz. Ancak, orijinal görüntünün çoğaltılmasından bahsetmek, bariz nedenlerden dolayı bazı bilgileri kaybedecektir.
 
-### 2.5 PCA Örnek Uygulama
+### 2.6 PCA Örnek Uygulama
 Görüntü sıkıştırma PCA’nın  yaygın bir uygulamasıdır. Şekilde 1200 x 795 piksel çözünürlükte çekilmiş bir ay resmi vardır. 
 
 ![Resim1](https://user-images.githubusercontent.com/58481075/211149248-c6f96728-c92a-44a5-8ec6-b9845c31cb1d.png)
@@ -280,4 +331,5 @@ Orijinal veriler, aşağıdaki kod alıntısı kullanılarak PC’lerden çoğal
 - https://blog.turhost.com/makine-ogrenmesi-machine-learning-nedir/
 - https://towardsdatascience.com/the-mathematics-behind-principal-component-analysis-fff2d7f4b643
 - https://www.veribilimiokulu.com/makineler-nasil-ogrenir/
+- https://www.sartorius.com/en/knowledge/science-snippets/what-is-principal-component-analysis-pca-and-how-it-is-used-507186#:~:text=Principal%20component%20analysis%2C%20or%20PCA,more%20easily%20visualized%20and%20analyzed
 - https://www.cs.toronto.edu/~rgrosse/courses/csc411_f18/slides/lec12-slides.pdf
